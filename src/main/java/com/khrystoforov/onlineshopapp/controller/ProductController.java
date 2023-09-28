@@ -20,7 +20,7 @@ public class ProductController {
 
     private final ProductDTOtoProduct productDTOtoProduct;
 
-    @PostMapping("/add")
+    @PostMapping("/manager/add")
     public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
         Product product = productDTOtoProduct.convertProductDTOToProduct(productDTO);
         return ResponseEntity.ok(productService.create(product));

@@ -1,4 +1,4 @@
-package com.khrystoforov.onlineshopapp.payload;
+package com.khrystoforov.onlineshopapp.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
