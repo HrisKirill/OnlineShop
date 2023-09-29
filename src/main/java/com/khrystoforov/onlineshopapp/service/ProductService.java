@@ -28,8 +28,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> findAllProductsByName(String name) {
-        return productRepository.findAllByName(name);
+    public List<Product> findAllProductsByNameAndStatus(String name, ProductStatus productStatus) {
+        return productRepository.findAllByNameAndStatus(name, productStatus);
     }
 
     public Product findProductById(Long id) {
@@ -61,5 +61,9 @@ public class ProductService {
         productRepository.saveAll(products);
 
         return productMapper.convertProductToProductDTO(product, count);
+    }
+
+    public void updateProductStatus(ProductStatus productStatus, Long productId) {
+        productRepository.updateProductStatusById(productStatus, productId);
     }
 }

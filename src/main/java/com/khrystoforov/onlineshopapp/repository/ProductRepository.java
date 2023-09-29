@@ -1,15 +1,19 @@
 package com.khrystoforov.onlineshopapp.repository;
 
 import com.khrystoforov.onlineshopapp.entity.Product;
+import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
-import java.util.Optional;
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findAllByName(String name);
+    List<Product> findAllByNameAndStatus(String name, ProductStatus status);
+
+    @Modifying
+    @Query("update products p set p.status= ?1 where p.id = ?2")
+    void updateProductStatusById(ProductStatus productStatus, Long id);
 }
