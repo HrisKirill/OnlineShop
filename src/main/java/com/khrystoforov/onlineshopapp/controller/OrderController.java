@@ -1,7 +1,7 @@
 package com.khrystoforov.onlineshopapp.controller;
 
 import com.khrystoforov.onlineshopapp.payload.dto.OrderDTO;
-import com.khrystoforov.onlineshopapp.payload.dto.OrderProductDTO;
+import com.khrystoforov.onlineshopapp.payload.response.MessageResponse;
 import com.khrystoforov.onlineshopapp.service.OrderProductService;
 import com.khrystoforov.onlineshopapp.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -19,17 +19,20 @@ public class OrderController {
     private final OrderProductService orderProductService;
 
     @PostMapping("/products/{productName}/quantity/{quantity}")
-    public ResponseEntity<OrderProductDTO> addProductsToOrder(
+    public ResponseEntity<MessageResponse> addProductsToOrder(
             @PathVariable String productName,
             @PathVariable Integer quantity) {
         return ResponseEntity.ok(orderProductService.addProductsToOrder(productName, quantity));
     }
 
+    @GetMapping
+    public ResponseEntity<OrderDTO> getAllProductsInOrder() {
+        return ResponseEntity.ok(orderService.getUserOrder());
+    }
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> getAllOrderProducts(
-            @PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
+    @DeleteMapping("/payment")
+    public ResponseEntity<MessageResponse> paymentForOrder() {
+        return ResponseEntity.ok(orderService.paymentForOrder());
     }
 
 

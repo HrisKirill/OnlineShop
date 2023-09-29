@@ -41,7 +41,7 @@ public class Order {
         double sum = 0D;
         List<OrderProduct> orderProducts = getOrderProducts();
         for (OrderProduct op : orderProducts) {
-            sum += op.getTotalPrice();
+            sum += op.getProduct().getPrice();
         }
         return sum;
     }

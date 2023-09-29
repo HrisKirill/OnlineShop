@@ -20,15 +20,10 @@ public class OrderProduct {
     @JsonIgnore
     private OrderProductPK pk;
 
-    @Column(nullable = false)
-    private Integer quantity;
-
-
-    public OrderProduct(Order order, Product product, Integer quantity) {
+    public OrderProduct(Order order, Product product) {
         pk = new OrderProductPK();
         pk.setOrder(order);
         pk.setProduct(product);
-        this.quantity = quantity;
     }
 
     @Transient
@@ -36,8 +31,5 @@ public class OrderProduct {
         return this.pk.getProduct();
     }
 
-    @Transient
-    public Double getTotalPrice() {
-        return getProduct().getPrice() * getQuantity();
-    }
+
 }
