@@ -1,34 +1,33 @@
 package com.khrystoforov.onlineshopapp.controller;
 
-import com.khrystoforov.onlineshopapp.entity.Order;
-import com.khrystoforov.onlineshopapp.entity.OrderProduct;
+import com.khrystoforov.onlineshopapp.payload.dto.OrderDTO;
+import com.khrystoforov.onlineshopapp.payload.dto.OrderProductDTO;
 import com.khrystoforov.onlineshopapp.service.OrderProductService;
 import com.khrystoforov.onlineshopapp.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/order")
+@Validated
 public class OrderController {
     private final OrderService orderService;
     private final OrderProductService orderProductService;
 
-    @PostMapping("/{orderId}/products/{productName}/quantity/{quantity}")
-    public ResponseEntity<OrderProduct> addProductsToOrder(
-            @PathVariable Long orderId,
+    @PostMapping("/products/{productName}/quantity/{quantity}")
+    public ResponseEntity<OrderProductDTO> addProductsToOrder(
             @PathVariable String productName,
             @PathVariable Integer quantity) {
-        return ResponseEntity.ok(orderProductService.addProductsToOrder(orderId, productName, quantity));
+        return ResponseEntity.ok(orderProductService.addProductsToOrder(productName, quantity));
     }
 
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getAllOrderProducts(
+    public ResponseEntity<OrderDTO> getAllOrderProducts(
             @PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
