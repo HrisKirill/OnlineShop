@@ -7,7 +7,7 @@ import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
 import com.khrystoforov.onlineshopapp.exception.ProductNotFoundException;
 import com.khrystoforov.onlineshopapp.exception.ProductQuantityException;
 import com.khrystoforov.onlineshopapp.mapper.OrderProductMapper;
-import com.khrystoforov.onlineshopapp.payload.dto.OrderProductDTO;
+import com.khrystoforov.onlineshopapp.payload.response.MessageResponse;
 import com.khrystoforov.onlineshopapp.repository.OrderProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,12 @@ public class OrderProductService {
     private final OrderProductMapper orderProductMapper;
 
     @Transactional
-    public OrderProductDTO addProductsToOrder(String productName, Integer quantity) {
+    public MessageResponse addProductsToOrder(String productName, Integer quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity mast be above zero");
         }
 
-        Order order = orderService.getOrderByUser(userService.getCurrentUser());
+        Order order = orderService.getOrderOrCreateIfNotExistByOwner();
         List<Product> allProductsWithThisName = productService
                 .findAllProductsByNameAndStatus(productName, ProductStatus.FREE);
 
@@ -46,10 +46,12 @@ public class OrderProductService {
         for (int i = 0; i < quantity; i++) {
             productService.updateProductStatus(ProductStatus.IN_PROCESSING,
                     allProductsWithThisName.get(i).getId());
+
+            orderProductRepository.
+                    save(new OrderProduct(order, allProductsWithThisName.get(i)));
         }
 
-        return orderProductMapper.ConvertOrderProductToDTO(orderProductRepository.
-                save(new OrderProduct(order, allProductsWithThisName.get(0), quantity)));
+        return new MessageResponse("Products add to order successfully");
     }
 
 }
