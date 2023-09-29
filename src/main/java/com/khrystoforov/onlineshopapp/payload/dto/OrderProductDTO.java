@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OrderProductDTO {
-    private ProductDTO productDTO;
+    private ProductDTO product;
     private Double totalPrice;
 }
