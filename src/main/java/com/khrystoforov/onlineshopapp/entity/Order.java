@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.khrystoforov.onlineshopapp.entity.enums.OrderStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Order {
 
     @Id
@@ -27,6 +29,9 @@ public class Order {
     private LocalDateTime dateCreated;
 
     private OrderStatus orderStatus;
+
+    @ManyToOne
+    private User owner;
 
     @OneToMany(mappedBy = "pk.order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -39,10 +44,5 @@ public class Order {
             sum += op.getTotalPrice();
         }
         return sum;
-    }
-
-    @Transient
-    public int getNumberOfProducts() {
-        return this.orderProducts.size();
     }
 }
