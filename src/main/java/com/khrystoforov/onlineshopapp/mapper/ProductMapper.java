@@ -5,7 +5,7 @@ import com.khrystoforov.onlineshopapp.entity.Product;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductMapper {
+public final class ProductMapper {
 
     public Product convertProductDTOToProduct(ProductDTO productDTO) {
         return Product.builder()
@@ -18,7 +18,7 @@ public class ProductMapper {
         return ProductDTO.builder()
                 .name(product.getName())
                 .price(product.getPrice())
-                .count(count)
+                .quantity(count)
                 .build();
     }
 

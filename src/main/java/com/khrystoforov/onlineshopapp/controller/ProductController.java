@@ -22,7 +22,7 @@ public class ProductController {
     @PostMapping("/manager/add")
     public ResponseEntity<ProductDTO> addProducts(@RequestBody ProductDTO productDTO) {
         return ResponseEntity.ok(productService.addProducts(
-                productMapper.convertProductDTOToProduct(productDTO), productDTO.getCount()));
+                productMapper.convertProductDTOToProduct(productDTO), productDTO.getQuantity()));
     }
 
     @GetMapping
