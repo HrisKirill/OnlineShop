@@ -1,8 +1,7 @@
 package com.khrystoforov.onlineshopapp.controller;
 
-import com.khrystoforov.onlineshopapp.dto.ProductDTO;
-import com.khrystoforov.onlineshopapp.entity.Product;
-import com.khrystoforov.onlineshopapp.mapper.ProductDTOtoProduct;
+import com.khrystoforov.onlineshopapp.payload.dto.ProductDTO;
+import com.khrystoforov.onlineshopapp.mapper.ProductMapper;
 import com.khrystoforov.onlineshopapp.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +17,16 @@ public class ProductController {
 
     private final ProductService productService;
 
-    private final ProductDTOtoProduct productDTOtoProduct;
+    private final ProductMapper productMapper;
 
     @PostMapping("/manager/add")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
-        Product product = productDTOtoProduct.convertProductDTOToProduct(productDTO);
-        return ResponseEntity.ok(productService.create(product));
+    public ResponseEntity<ProductDTO> addProducts(@RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.addProducts(
+                productMapper.convertProductDTOToProduct(productDTO), productDTO.getCount()));
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAll() {
-        return ResponseEntity.ok(productService.findAllProducts());
+    public ResponseEntity<List<ProductDTO>> findFreeProducts() {
+        return ResponseEntity.ok(productService.findFreeProducts());
     }
 }

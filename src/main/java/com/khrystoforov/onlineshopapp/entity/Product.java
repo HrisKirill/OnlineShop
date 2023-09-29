@@ -1,5 +1,6 @@
 package com.khrystoforov.onlineshopapp.entity;
 
+import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,5 @@ public class Product {
     @NotNull(message = "Product name is required.")
     private String name;
     private Double price;
+    private ProductStatus status;
 }
