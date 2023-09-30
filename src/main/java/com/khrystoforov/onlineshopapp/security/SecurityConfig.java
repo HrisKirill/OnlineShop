@@ -35,8 +35,8 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize.antMatchers(SecurityConstants.AUTH_URLS).permitAll()
-                                .antMatchers(SecurityConstants.MANAGER_URLS).hasAuthority(Role.MANAGER.name())
-                                .antMatchers(SecurityConstants.CLIENT_URLS).hasAuthority(Role.CLIENT.name())
+                                .antMatchers(SecurityConstants.MANAGER_URLS + "/*").hasRole(Role.MANAGER.name())
+                                .antMatchers(SecurityConstants.CLIENT_URLS + "/*").hasRole(Role.CLIENT.name())
                                 .anyRequest().authenticated()
                 ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
