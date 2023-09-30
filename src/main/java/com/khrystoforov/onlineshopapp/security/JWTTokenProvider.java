@@ -15,10 +15,14 @@ import java.util.Map;
 @Component
 @Slf4j
 public class JWTTokenProvider {
-    @Value("${jwt.secret}")
-    private String secret;
-    @Value("${jwt.expiration}")
-    private Long expirationTime;
+    private final String secret;
+    private final Long expirationTime;
+
+    public JWTTokenProvider(@Value("${jwt.secret}") String secret,
+                            @Value("${jwt.expiration}") Long expirationTime) {
+        this.secret = secret;
+        this.expirationTime = expirationTime;
+    }
 
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
