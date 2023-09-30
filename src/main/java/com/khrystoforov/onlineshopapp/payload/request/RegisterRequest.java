@@ -1,11 +1,11 @@
 package com.khrystoforov.onlineshopapp.payload.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class RegisterRequest {
     private String email;
     private String username;
