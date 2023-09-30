@@ -21,12 +21,6 @@ public class UserService {
         return userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email: " + email + " not exists"));
     }
-
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not exists"));
-    }
-
     public boolean existsByEmail(String email) {
         return userRepository.existsUserByEmail(email);
     }

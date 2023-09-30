@@ -1,21 +1,19 @@
 package com.khrystoforov.onlineshopapp.service;
 
 
-import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
-import com.khrystoforov.onlineshopapp.payload.dto.ProductDTO;
 import com.khrystoforov.onlineshopapp.entity.Product;
-import com.khrystoforov.onlineshopapp.exception.ProductNotFoundException;
+import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
 import com.khrystoforov.onlineshopapp.mapper.ProductMapper;
+import com.khrystoforov.onlineshopapp.payload.dto.ProductDTO;
 import com.khrystoforov.onlineshopapp.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -30,11 +28,6 @@ public class ProductService {
 
     public List<Product> findAllProductsByNameAndStatus(String name, ProductStatus productStatus) {
         return productRepository.findAllByNameAndStatus(name, productStatus);
-    }
-
-    public Product findProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product is not exist with id " + id));
     }
 
     public List<ProductDTO> findFreeProducts() {

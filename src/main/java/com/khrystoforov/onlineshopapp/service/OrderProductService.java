@@ -6,7 +6,6 @@ import com.khrystoforov.onlineshopapp.entity.Product;
 import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
 import com.khrystoforov.onlineshopapp.exception.ProductNotFoundException;
 import com.khrystoforov.onlineshopapp.exception.ProductQuantityException;
-import com.khrystoforov.onlineshopapp.mapper.OrderProductMapper;
 import com.khrystoforov.onlineshopapp.payload.response.MessageResponse;
 import com.khrystoforov.onlineshopapp.repository.OrderProductRepository;
 import lombok.AllArgsConstructor;
@@ -23,8 +22,6 @@ public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
     private final OrderService orderService;
     private final ProductService productService;
-    private final UserService userService;
-    private final OrderProductMapper orderProductMapper;
 
     @Transactional
     public MessageResponse addProductsToOrder(String productName, Integer quantity) {

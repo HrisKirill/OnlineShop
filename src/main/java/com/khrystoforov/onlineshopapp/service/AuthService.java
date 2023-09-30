@@ -30,8 +30,6 @@ public class AuthService {
 
 
     public JWTTokenSuccessResponse login(LoginRequest loginRequest) {
-//        User user = userService.findUserByEmail(loginRequest.getEmail());
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
