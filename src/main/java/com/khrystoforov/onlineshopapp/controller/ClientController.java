@@ -2,19 +2,18 @@ package com.khrystoforov.onlineshopapp.controller;
 
 import com.khrystoforov.onlineshopapp.payload.dto.OrderDTO;
 import com.khrystoforov.onlineshopapp.payload.response.MessageResponse;
+import com.khrystoforov.onlineshopapp.security.SecurityConstants;
 import com.khrystoforov.onlineshopapp.service.OrderProductService;
 import com.khrystoforov.onlineshopapp.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
+@RequestMapping(SecurityConstants.CLIENT_URLS)
 @AllArgsConstructor
-@RequestMapping("/order")
-@Validated
-public class OrderController {
+public class ClientController {
+
     private final OrderService orderService;
     private final OrderProductService orderProductService;
 
@@ -34,6 +33,4 @@ public class OrderController {
     public ResponseEntity<MessageResponse> paymentForOrder() {
         return ResponseEntity.ok(orderService.paymentForOrder());
     }
-
-
 }
