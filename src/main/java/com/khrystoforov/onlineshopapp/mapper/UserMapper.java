@@ -5,7 +5,7 @@ import com.khrystoforov.onlineshopapp.payload.dto.UserDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class UserMapper {
+public  class UserMapper {
 
     public UserDTO convertUserToDTO(User user) {
         return UserDTO.builder()

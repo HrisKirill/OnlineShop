@@ -5,7 +5,7 @@ import com.khrystoforov.onlineshopapp.entity.Product;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ProductMapper {
+public class ProductMapper {
 
     public Product convertProductDTOToProduct(ProductDTO productDTO) {
         return Product.builder()

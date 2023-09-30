@@ -6,7 +6,7 @@ import com.khrystoforov.onlineshopapp.payload.dto.ProductDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class OrderProductMapper {
+public  class OrderProductMapper {
 
     public OrderProductDTO ConvertOrderProductToDTO(OrderProduct orderProduct) {
         return new OrderProductDTO(

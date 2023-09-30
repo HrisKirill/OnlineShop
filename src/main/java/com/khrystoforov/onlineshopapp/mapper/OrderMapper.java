@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-public final class OrderMapper {
+public class OrderMapper {
 
     private final UserMapper userMapper;
     private final OrderProductMapper orderProductMapper;
