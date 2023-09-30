@@ -27,8 +27,8 @@ public class OrderService {
 
     public OrderDTO getUserOrder() {
         Long userId = userService.getCurrentUser().getId();
-        Order order = orderRepository.findById(userId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id " + userId));
+        Order order = orderRepository.findOrderByOwnerId(userId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with owner id " + userId));
         return orderMapper.convertOrderToDTO(order);
     }
 

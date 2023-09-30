@@ -15,6 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    Optional<Order> findOrderByOwnerId(Long ownerId);
+
     List<Order> findByOrderStatusAndDateCreatedBefore(OrderStatus orderStatus, LocalDateTime timeCreated);
 
     @Query("SELECT o from orders  o where  o.owner=?1 and o.orderStatus=1")

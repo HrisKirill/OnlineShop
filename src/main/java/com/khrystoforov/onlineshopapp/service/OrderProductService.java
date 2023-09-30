@@ -26,7 +26,7 @@ public class OrderProductService {
     @Transactional
     public MessageResponse addProductsToOrder(String productName, Integer quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity mast be above zero");
+            throw new IllegalArgumentException("Quantity must be above zero");
         }
 
         Order order = orderService.getOrderOrCreateIfNotExistByOwner();
