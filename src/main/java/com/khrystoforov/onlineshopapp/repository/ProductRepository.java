@@ -16,4 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Query("update products p set p.status= ?1 where p.id = ?2")
     void updateProductStatusById(ProductStatus productStatus, Long id);
+
+    @Modifying
+    @Query(value = "delete from products  where name=?1 and status='IN_PROCESSING' " +
+            " order by id limit ?2", nativeQuery = true)
+    void deleteInProcessingProductByName(String name, Integer limit);
 }

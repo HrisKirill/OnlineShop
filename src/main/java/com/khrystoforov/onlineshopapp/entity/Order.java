@@ -4,21 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.khrystoforov.onlineshopapp.entity.enums.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "orders")
-@Data
-@AllArgsConstructor
+@Getter
+@EqualsAndHashCode(exclude = {"id", "owner", "products"})
+@ToString(exclude = {"id"})
 @NoArgsConstructor
-@Builder
 public class Order {
 
     @Id
@@ -26,22 +23,44 @@ public class Order {
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dateCreated;
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
-    private OrderStatus orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus = OrderStatus.UNPAID;
 
-    @ManyToOne
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User owner;
 
-    @OneToMany(mappedBy = "pk.order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    @ElementCollection
+    @Column(name = "quantity", nullable = false)
+    @MapKeyJoinColumn(name = "product_id")
+    private Map<Product, Integer> products = new HashMap<>();
+
+    public Order(User owner) {
+        this.owner = owner;
+    }
+
+    public Map<Product, Integer> getProducts() {
+        return Collections.unmodifiableMap(products);
+    }
+
+    public void addProduct(Product item) {
+        products.merge(item, 1, Integer::sum);
+    }
+
+    public void removeProduct(Product item) {
+        products.computeIfPresent(item, (k, v) -> v > 1 ? v - 1 : null);
+    }
 
     @Transient
     public Double getTotalOrderPrice() {
         double sum = 0D;
-        List<OrderProduct> orderProducts = getOrderProducts();
-        for (OrderProduct op : orderProducts) {
-            sum += op.getProduct().getPrice();
+        Map<Product, Integer> products = getProducts();
+        for (Map.Entry<Product, Integer> entry :
+                products.entrySet()) {
+            sum += entry.getKey().getPrice() * entry.getValue();
         }
         return sum;
     }

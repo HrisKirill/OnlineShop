@@ -36,7 +36,7 @@ public class ProductService {
                 .collect(Collectors.groupingBy(Product::getName));
 
         return collect.values().stream()
-                .map(products -> productMapper.convertProductToProductDTO(
+                .map(products -> productMapper.productToProductDTO(
                         products.get(0), products.size()))
                 .collect(Collectors.toList());
     }
@@ -44,19 +44,18 @@ public class ProductService {
     public ProductDTO addProducts(Product product, Integer count) {
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            products.add(Product.builder()
-                    .name(product.getName())
-                    .price(product.getPrice())
-                    .status(ProductStatus.FREE)
-                    .build()
-            );
+            products.add(new Product(product.getName(), product.getPrice()));
         }
         productRepository.saveAll(products);
 
-        return productMapper.convertProductToProductDTO(product, count);
+        return productMapper.productToProductDTO(product, count);
     }
 
     public void updateProductStatus(ProductStatus productStatus, Long productId) {
         productRepository.updateProductStatusById(productStatus, productId);
+    }
+
+    public void deleteInProcessingProductByName(String name, Integer limit) {
+        productRepository.deleteInProcessingProductByName(name, limit);
     }
 }
