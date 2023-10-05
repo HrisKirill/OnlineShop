@@ -19,9 +19,9 @@ public class ManagerController {
 
     private final ProductMapper productMapper;
 
-    @PostMapping("/add")
+    @PostMapping("/products/add")
     public ResponseEntity<ProductDTO> addProducts(@RequestBody ProductDTO productDTO) {
         return ResponseEntity.ok(productService.addProducts(
-                productMapper.convertProductDTOToProduct(productDTO), productDTO.getQuantity()));
+                productMapper.productDTOToProduct(productDTO), productDTO.getQuantity()));
     }
 }
