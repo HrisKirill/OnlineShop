@@ -1,28 +1,34 @@
 package com.khrystoforov.onlineshopapp.entity;
 
 import com.khrystoforov.onlineshopapp.entity.enums.ProductStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "products")
-@Data
+@Getter
+@EqualsAndHashCode(exclude = {"id", "status"})
+@ToString(exclude = {"id"})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(indexes = {
+        @Index(name = "name_index", columnList = "name")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "Product name is required.")
+    @Column(nullable = false, length = 32)
     private String name;
     private Double price;
-    private ProductStatus status;
+    @Enumerated(EnumType.STRING)
+    @Setter
+    private ProductStatus status = ProductStatus.FREE;
+
+    public Product(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
 }
