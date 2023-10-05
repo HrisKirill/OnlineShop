@@ -2,15 +2,13 @@ package com.khrystoforov.onlineshopapp.mapper;
 
 import com.khrystoforov.onlineshopapp.entity.User;
 import com.khrystoforov.onlineshopapp.payload.dto.UserDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-@Component
-public  class UserMapper {
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    public UserDTO convertUserToDTO(User user) {
-        return UserDTO.builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .build();
-    }
+    UserDTO userToUserDTO(User user);
 }

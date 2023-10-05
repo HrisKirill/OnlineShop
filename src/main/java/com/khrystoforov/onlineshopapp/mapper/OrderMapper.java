@@ -1,34 +1,31 @@
 package com.khrystoforov.onlineshopapp.mapper;
 
 import com.khrystoforov.onlineshopapp.entity.Order;
-import com.khrystoforov.onlineshopapp.entity.OrderProduct;
-import com.khrystoforov.onlineshopapp.entity.Product;
+import com.khrystoforov.onlineshopapp.entity.User;
 import com.khrystoforov.onlineshopapp.payload.dto.OrderDTO;
 import com.khrystoforov.onlineshopapp.payload.dto.ProductDTO;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
-@AllArgsConstructor
-public class OrderMapper {
 
-    private final UserMapper userMapper;
-    private final OrderProductMapper orderProductMapper;
-
-    public OrderDTO convertOrderToDTO(Order order) {
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface OrderMapper {
+    default OrderDTO orderToOrderDTO(Order order, User user) {
         return OrderDTO.builder()
-                .id(order.getId())
-                .orderStatus(order.getOrderStatus())
                 .dateCreated(order.getDateCreated())
-                .owner(userMapper.convertUserToDTO(order.getOwner()))
-                .products(order.getOrderProducts().stream()
-                        .map(orderProductMapper::ConvertOrderProductToDTO)
-                        .collect(Collectors.toList()))
+                .orderStatus(order.getOrderStatus())
+                .owner(UserMapper.INSTANCE.userToUserDTO(user))
+                .products(order.getProducts().entrySet().stream()
+                        .map(e -> ProductDTO.builder()
+                                .name(e.getKey().getName())
+                                .price(e.getKey().getPrice())
+                                .quantity(e.getValue())
+                                .build())
+                        .collect(Collectors.toList())
+                )
                 .totalOrderPrice(order.getTotalOrderPrice())
                 .build();
     }
+
 }

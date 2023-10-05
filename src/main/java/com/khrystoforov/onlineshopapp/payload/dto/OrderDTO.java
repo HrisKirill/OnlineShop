@@ -6,14 +6,14 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Builder
 @Data
 public class OrderDTO {
-    private Long id;
     private LocalDateTime dateCreated;
     private OrderStatus orderStatus;
     private UserDTO owner;
-    private List<OrderProductDTO> products;
+    private List<ProductDTO> products;
     private Double totalOrderPrice;
 }
