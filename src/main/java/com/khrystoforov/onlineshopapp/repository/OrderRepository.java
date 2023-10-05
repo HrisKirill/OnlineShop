@@ -3,6 +3,7 @@ package com.khrystoforov.onlineshopapp.repository;
 import com.khrystoforov.onlineshopapp.entity.Order;
 import com.khrystoforov.onlineshopapp.entity.User;
 import com.khrystoforov.onlineshopapp.entity.enums.OrderStatus;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByOrderStatusAndDateCreatedBefore(OrderStatus orderStatus, LocalDateTime timeCreated);
 
-    @Query("SELECT o from orders  o where  o.owner=?1 and o.orderStatus=1")
-    Optional<Order> findOrderByOrderStatusUnpaidAndOwner(User user);
-
+    Optional<Order> findOrderByOwner(User user);
     @Modifying
     @Query(value = "update products set products.status=1 where id in ( select id from " +
             "(select id from products join order_product  " +
