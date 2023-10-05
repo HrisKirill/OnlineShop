@@ -41,19 +41,19 @@ class ManagerControllerTest {
 
     @Test
     public void testAddProducts() throws Exception {
-        ProductDTO productDTO =ProductDTO
+        ProductDTO productDTO = ProductDTO
                 .builder()
                 .name("test")
                 .price(300.0)
                 .quantity(2)
                 .build();
 
-        when(productMapper.convertProductDTOToProduct(productDTO)).thenReturn(new Product());
+        when(productMapper.productDTOToProduct(productDTO)).thenReturn(new Product());
         when(productService.addProducts(any(), eq(2))).thenReturn(productDTO);
 
-        mockMvc.perform(post("/manager/add")
-                .content(asJsonString(productDTO))
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/manager/products/add")
+                        .content(asJsonString(productDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("test"))
@@ -61,7 +61,7 @@ class ManagerControllerTest {
                 .andExpect(jsonPath("$.quantity").value(2));
 
 
-        verify(productMapper, times(1)).convertProductDTOToProduct(productDTO);
+        verify(productMapper, times(1)).productDTOToProduct(productDTO);
         verify(productService, times(1)).addProducts(any(), eq(2));
         verifyNoMoreInteractions(productMapper, productService);
     }

@@ -77,6 +77,10 @@ public class OrderService {
 
     @Transactional
     public MessageResponse addProductsToOrder(String productName, Integer quantity) {
+        if (quantity < 1) {
+            throw new IllegalArgumentException("quantity can not be less than 1");
+        }
+
         Order order = getOrderOrCreateIfNotExistByOwner();
         List<Product> allProductsWithThisName = productService.findAllProductsByNameAndStatus(productName, ProductStatus.FREE);
 

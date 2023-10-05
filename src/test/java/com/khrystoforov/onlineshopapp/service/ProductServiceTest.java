@@ -56,7 +56,7 @@ public class ProductServiceTest {
 
         when(productRepository.findAll()).thenReturn(list);
 
-        ProductDTO freeProduct = productMapper.convertProductToProductDTO(getTestProduct(), 1);
+        ProductDTO freeProduct = productMapper.productToProductDTO(getTestProduct(), 1);
 
         List<ProductDTO> productDTOS = new ArrayList<>();
         productDTOS.add(freeProduct);
@@ -74,7 +74,7 @@ public class ProductServiceTest {
 
         when(productRepository.saveAll(List.of(product)))
                 .thenReturn(List.of(product));
-        ProductDTO productDTO = productMapper.convertProductToProductDTO(product, 1);
+        ProductDTO productDTO = productMapper.productToProductDTO(product, 1);
 
         assertEquals(productDTO, productService.addProducts(product, 1));
     }

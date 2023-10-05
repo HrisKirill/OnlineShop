@@ -5,7 +5,6 @@ import com.khrystoforov.onlineshopapp.entity.enums.OrderStatus;
 import com.khrystoforov.onlineshopapp.payload.dto.OrderDTO;
 import com.khrystoforov.onlineshopapp.payload.response.MessageResponse;
 import com.khrystoforov.onlineshopapp.security.SecurityConstants;
-import com.khrystoforov.onlineshopapp.service.OrderProductService;
 import com.khrystoforov.onlineshopapp.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ClientControllerTest {
     @Mock
     private OrderService orderService;
-    @Mock
-    private OrderProductService orderProductService;
 
     @InjectMocks
     private ClientController controller;
@@ -48,7 +45,7 @@ class ClientControllerTest {
 
     @Test
     void testAddProductsToOrder() throws Exception {
-        when(orderProductService.addProductsToOrder(anyString(), anyInt()))
+        when(orderService.addProductsToOrder(anyString(), anyInt()))
                 .thenReturn(new MessageResponse("Products added successfully"));
 
         mockMvc.perform(post(SecurityConstants.CLIENT_URLS + "/products/ProductA/quantity/5")
@@ -56,21 +53,21 @@ class ClientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Products added successfully"));
 
-        verify(orderProductService, times(1)).addProductsToOrder("ProductA", 5);
+        verify(orderService, times(1)).addProductsToOrder("ProductA", 5);
     }
 
     @Test
     void testGetAllProductsInOrder() throws Exception {
         OrderDTO orderDTO = OrderDTO.builder()
-                .id(1L)
                 .products(Collections.emptyList())
                 .totalOrderPrice(0.)
                 .orderStatus(OrderStatus.UNPAID)
                 .build();
+
         when(orderService.getUserOrder()).thenReturn(orderDTO);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(SecurityConstants.CLIENT_URLS)
+                        .get(SecurityConstants.CLIENT_URLS + "/order")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.products").exists());
